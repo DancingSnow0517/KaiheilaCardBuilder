@@ -1,9 +1,7 @@
 import time
-from typing import List
 
-from accessory import Image, Button
-from accessory import PlainText
-from accessory import _BaseAccessory
+from .accessory import *
+from .accessory import _BaseText, _BaseNonText, _BaseAccessory
 
 
 class _Module:
@@ -51,10 +49,10 @@ class Section(_Module):
      结构化的内容，显示文本+其它元素。
     """
     mode: str
-    text: BaseText
-    accessory: BaseNonText
+    text: _BaseText
+    accessory: _BaseNonText
 
-    def __init__(self, text: BaseText, mode: str = 'right', accessory: BaseNonText = None) -> None:
+    def __init__(self, text: _BaseText, mode: str = 'right', accessory: _BaseNonText = None) -> None:
         """
         构建内容模块
 

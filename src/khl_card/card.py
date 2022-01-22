@@ -1,7 +1,7 @@
 from typing import Optional, List
 
-from modules import _Module
-from color import Color
+from .modules import _Module
+from .color import Color
 
 
 class Card:
