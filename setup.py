@@ -4,8 +4,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="KaiheilaCardBuilder",
-    version="1.0.0",
+    name="KaiHeiLaCardBuilder",
+    version="1.0.1",
     author="DancingSnow",
     author_email="1121149616@qq.com",
     description="一个构建开黑啦卡片的工具",
