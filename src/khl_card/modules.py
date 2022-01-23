@@ -117,7 +117,7 @@ class Container(_Module):
 
         :param elements: 图片元素，其它元素无效
         """
-        self.type = 'image-group'
+        self.type = 'container'
         if len(elements) > 9:
             raise Exception('图片元素最多为9个')
         self.elements = elements
