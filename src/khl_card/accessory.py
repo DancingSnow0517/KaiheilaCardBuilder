@@ -1,12 +1,16 @@
+from abc import ABC, abstractmethod
 from typing import List
 
+__all__ = ['PlainText', 'Kmarkdown', 'Paragraph', 'Image', 'Button', '_BaseAccessory', '_BaseText', '_BaseNonText']
 
-class _BaseAccessory:
+
+class _BaseAccessory(ABC):
     """
     元素基类
     """
     type: str
 
+    @abstractmethod
     def build(self) -> dict:
         """
         :return: 构造后元素
@@ -27,6 +31,7 @@ class _BaseNonText(_BaseAccessory):
     """
     非文字类元素基类
     """
+
     def build(self) -> dict:
         return {'type': self.type}
 
@@ -146,4 +151,4 @@ class Button(_BaseNonText):
         self.click = click
 
     def build(self) -> dict:
-        return {'type': self.type, 'theme': self.theme, 'value': self.theme, 'click': self.click, 'text': self.text}
+        return {'type': self.type, 'theme': self.theme, 'value': self.value, 'click': self.click, 'text': self.text}

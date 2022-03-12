@@ -23,4 +23,13 @@ class Color:
         self.B = b
 
     def __str__(self) -> str:
-        return f'#{hex(self.R)}{hex(self.G)}{hex(self.B)}'
+        r = str(hex(self.R))[2:]
+        g = str(hex(self.G))[2:]
+        b = str(hex(self.B))[2:]
+        if len(r) == 1:
+            r = '0' + r
+        if len(g) == 1:
+            g = '0' + g
+        if len(b) == 1:
+            b = '0' + b
+        return f'#{r+g+b}'

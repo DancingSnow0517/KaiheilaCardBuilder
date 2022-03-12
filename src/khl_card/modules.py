@@ -1,15 +1,21 @@
+import datetime
 import time
-from typing import List
+from abc import abstractmethod, ABC
+from typing import List, Optional
 
 from .accessory import _BaseText, _BaseNonText, _BaseAccessory, PlainText, Image, Button
 
+__all__ = ['Header', 'Section', 'ImageGroup', 'Container', 'Context', 'ActionGroup', 'File', 'Audio', 'Video',
+           'Divider', 'Invite', 'Countdown', '_Module']
 
-class _Module:
+
+class _Module(ABC):
     """
     模块基类
     """
     type: str
 
+    @abstractmethod
     def build(self) -> dict:
         """
         构建模块
@@ -227,10 +233,47 @@ class Countdown(_Module):
         self.type = 'countdown'
         if mode != 'day' and mode != 'hour' and mode != 'second':
             raise Exception('mode必须为 day|hour|second')
-        if endtime > starttime:
+        self.mode = mode
+        if endtime < starttime:
             raise Exception('结束时间要大于开始时间')
         self.endTime = endtime
-        self.startTime = starttime
+        self.startTime = int(starttime)
+
+    @classmethod
+    def new_countdown(cls, end_time: str, mode):
+        """
+        :param mode: 倒计时模式
+        :param end_time: 结束时间 ex: 2022-05-05 08:00:00
+        """
+        time_stamp = time.mktime(time.strptime(end_time, '%Y-%m-%d %H:%M:%S'))
+        return cls(int(time_stamp * 1000), mode)
+
+    @classmethod
+    def new_day_countdown(cls, end_time: str):
+        """
+        :param end_time: 结束时间 ex: 2022-05-05 08:00:00
+        """
+        return cls.new_countdown(end_time, 'day')
+
+    @classmethod
+    def new_hour_countdown(cls, end_time: str):
+        """
+        :param end_time: 结束时间 ex: 2022-05-05 08:00:00
+        """
+        return cls.new_countdown(end_time, 'hour')
+
+    @classmethod
+    def new_second_countdown(cls, end_time: str, start_time: Optional[str] = None):
+        """
+        :param end_time: 结束时间 ex: 2022-05-05 08:00:00
+        :param start_time: 开始时间 ex: 2022-05-05 08:00:00 留空则为当前时间
+        """
+        time_stamp = time.mktime(time.strptime(end_time, '%Y-%m-%d %H:%M:%S'))
+        if start_time is None:
+            start_time = time.time()
+        else:
+            start_time = time.mktime(time.strptime(start_time, '%Y-%m-%d %H:%M:%S'))
+        return cls(int(time_stamp * 1000), 'second', starttime=int(start_time * 1000))
 
     def build(self) -> dict:
         return {'type': self.type, 'mode': self.mode, 'endTime': self.endTime, 'startTime': self.startTime}

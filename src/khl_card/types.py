@@ -1,5 +1,7 @@
 from .color import Color
 
+__all__ = ['Theme', 'Size', 'NamedColor']
+
 
 class Theme:
     PRIMARY: str = 'primary'
@@ -8,7 +10,7 @@ class Theme:
     WARNING: str = 'warning'
     INFO: str = 'info'
     SECONDARY: str = 'secondary'
-    NONR: str = 'none'
+    NONE: str = 'none'
 
 
 class Size:
