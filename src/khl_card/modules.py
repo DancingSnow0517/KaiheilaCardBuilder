@@ -1,4 +1,4 @@
-import datetime
+import json
 import time
 from abc import abstractmethod, ABC
 from typing import List, Optional
@@ -23,6 +23,9 @@ class _Module(ABC):
         :return: 构造后模块
         """
         return {'type': self.type}
+
+    def build_to_json(self) -> str:
+        return json.dumps(self.build(), indent=4, ensure_ascii=False)
 
 
 class Header(_Module):

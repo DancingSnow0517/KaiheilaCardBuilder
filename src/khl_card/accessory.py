@@ -1,3 +1,4 @@
+import json
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -16,6 +17,9 @@ class _BaseAccessory(ABC):
         :return: 构造后元素
         """
         return {'type': self.type}
+
+    def build_to_json(self) -> str:
+        return json.dumps(self.build(), indent=4, ensure_ascii=False)
 
 
 class _BaseText(_BaseAccessory):
@@ -141,9 +145,9 @@ class Button(_BaseNonText):
     theme: str
     value: str
     click: str
-    text: str
+    text: _BaseText
 
-    def __init__(self, text: str, theme: str = 'primary', value: str = '', click: str = '') -> None:
+    def __init__(self, text: _BaseText, theme: str = 'primary', value: str = '', click: str = '') -> None:
         self.type = 'button'
         self.text = text
         self.theme = theme
@@ -151,4 +155,4 @@ class Button(_BaseNonText):
         self.click = click
 
     def build(self) -> dict:
-        return {'type': self.type, 'theme': self.theme, 'value': self.value, 'click': self.click, 'text': self.text}
+        return {'type': self.type, 'theme': self.theme, 'value': self.value, 'click': self.click, 'text': self.text.build()}

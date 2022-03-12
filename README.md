@@ -74,6 +74,10 @@ card.build_to_json()
 
 ## 更新日志
 
+### 1.1.1
+
+卡片按钮现在使用 ``PlainText`` 或 ``Kmarkdown``
+
 ### 1.1.0
 
 添加 ``Card`` 的一些方法
