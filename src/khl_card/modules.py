@@ -13,7 +13,6 @@ class _Module(ABC):
     """
     模块基类
     """
-    type: str
 
     @abstractmethod
     def build(self) -> dict:
@@ -22,7 +21,6 @@ class _Module(ABC):
 
         :return: 构造后模块
         """
-        return {'type': self.type}
 
     def build_to_json(self) -> str:
         return json.dumps(self.build(), indent=4, ensure_ascii=False)

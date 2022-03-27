@@ -1,5 +1,6 @@
 import json
-from typing import Optional, List
+from collections.abc import Sequence
+from typing import List
 
 from .color import Color
 from .modules import _Module
@@ -7,7 +8,7 @@ from .modules import _Module
 __all__ = ['Card']
 
 
-class Card:
+class Card(Sequence):
     """
     构建卡片
     """
@@ -17,7 +18,8 @@ class Card:
     color: [Color, str]
     modules: List[_Module]
 
-    def __init__(self, modules: List[_Module], theme: str = 'primary', size: str = 'lg', color: [Color, str] = None) -> None:
+    def __init__(self, modules: List[_Module], theme: str = 'primary', size: str = 'lg',
+                 color: [Color, str] = None) -> None:
         """
         构建卡片
 
@@ -36,6 +38,9 @@ class Card:
 
     def __getitem__(self, item: int):
         return self.modules[item]
+
+    def __len__(self):
+        return len(self.modules)
 
     def build(self) -> dict:
         """
@@ -56,3 +61,15 @@ class Card:
 
     def clear(self):
         self.modules.clear()
+
+    def set_theme(self, theme: str = 'primary'):
+        self.theme = theme
+
+    def set_color(self, color: [Color, str] = None):
+        if isinstance(color, Color):
+            self.color = color.__str__()
+        if isinstance(color, str):
+            self.color = color
+
+    def set_size(self, size: str = 'lg'):
+        self.size = size

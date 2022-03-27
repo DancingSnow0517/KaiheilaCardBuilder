@@ -9,35 +9,27 @@ class _BaseAccessory(ABC):
     """
     元素基类
     """
-    type: str
 
     @abstractmethod
     def build(self) -> dict:
         """
         :return: 构造后元素
         """
-        return {'type': self.type}
 
     def build_to_json(self) -> str:
         return json.dumps(self.build(), indent=4, ensure_ascii=False)
 
 
-class _BaseText(_BaseAccessory):
+class _BaseText(_BaseAccessory, ABC):
     """
     文字类元素基类
     """
 
-    def build(self) -> dict:
-        return {'type': self.type}
 
-
-class _BaseNonText(_BaseAccessory):
+class _BaseNonText(_BaseAccessory, ABC):
     """
     非文字类元素基类
     """
-
-    def build(self) -> dict:
-        return {'type': self.type}
 
 
 class PlainText(_BaseText):
@@ -155,4 +147,5 @@ class Button(_BaseNonText):
         self.click = click
 
     def build(self) -> dict:
-        return {'type': self.type, 'theme': self.theme, 'value': self.value, 'click': self.click, 'text': self.text.build()}
+        return {'type': self.type, 'theme': self.theme, 'value': self.value, 'click': self.click,
+                'text': self.text.build()}
