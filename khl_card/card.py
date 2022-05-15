@@ -31,8 +31,8 @@ class Card(Sequence):
         :param color: 卡片颜色 ex: #55ffff or NamedColor.XXX
         """
         self.modules = list(modules)
-        self.theme = theme
-        self.size = size
+        self.theme = theme if isinstance(theme, str) else theme.value
+        self.size = size if isinstance(size, str) else size.value
         if color is None:
             self.color = None
         elif isinstance(color, str):
