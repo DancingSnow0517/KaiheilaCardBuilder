@@ -1,7 +1,7 @@
 import json
 import time
 from abc import abstractmethod, ABC
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from .accessory import _BaseText, _BaseNonText, _BaseAccessory, PlainText, Image, Button
 
@@ -61,7 +61,7 @@ class Section(_Module):
     text: _BaseText
     accessory: _BaseNonText
 
-    def __init__(self, text: _BaseText, mode: str = 'right', accessory: _BaseNonText = None) -> None:
+    def __init__(self, text: _BaseText, *, mode: str = 'right', accessory: _BaseNonText = None) -> None:
         """
         构建内容模块
 
@@ -90,9 +90,9 @@ class ImageGroup(_Module):
 
     1 到多张图片的组合
     """
-    elements: List[Image]
+    elements: Tuple[Image]
 
-    def __init__(self, elements: List[Image]) -> None:
+    def __init__(self, *elements: Image) -> None:
         """
         构建图片组模块
 
@@ -116,9 +116,9 @@ class Container(_Module):
     """
     构建容器模块
     """
-    elements: List[Image]
+    elements: Tuple[Image]
 
-    def __init__(self, elements: List[Image]) -> None:
+    def __init__(self, *elements: Image) -> None:
         """
         构建容器模块
 
@@ -144,9 +144,9 @@ class ActionGroup(_Module):
 
     交互模块中包含交互控件元素，目前支持的交互控件为按钮（button）
     """
-    elements: List[Button]
+    elements: Tuple[Button]
 
-    def __init__(self, elements: List[Button]) -> None:
+    def __init__(self, *elements: Button) -> None:
         """
         构建交互模块
 
@@ -172,9 +172,9 @@ class Context(_Module):
 
     展示图文混合的内容。
     """
-    elements: List[_BaseAccessory]
+    elements: Tuple[_BaseAccessory]
 
-    def __init__(self, elements: List[_BaseAccessory]) -> None:
+    def __init__(self, *elements: _BaseAccessory) -> None:
         """
         构建备注模块
 

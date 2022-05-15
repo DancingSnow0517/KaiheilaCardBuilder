@@ -1,9 +1,11 @@
 from .color import Color
 
-__all__ = ['Theme', 'Size', 'NamedColor']
+from enum import StrEnum, Enum
+
+__all__ = ['ThemeTypes', 'SizeTypes', 'NamedColor']
 
 
-class Theme:
+class ThemeTypes(StrEnum):
     PRIMARY: str = 'primary'
     SUCCESS: str = 'success'
     DANGER: str = 'danger'
@@ -13,14 +15,14 @@ class Theme:
     NONE: str = 'none'
 
 
-class Size:
+class SizeTypes(StrEnum):
     XS: str = 'xs'
     SM: str = 'sm'
     MD: str = 'md'
     LG: str = 'lg'
 
 
-class NamedColor:
+class NamedColor(Enum):
     BLACK: Color = Color(0, 0, 0)
     DARK_BLUE: Color = Color(0, 0, 170)
     DARK_GREEN: Color = Color(0, 170, 0)
