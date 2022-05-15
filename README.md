@@ -7,7 +7,7 @@
 ```python
 from khl_card.card import Card
 from khl_card.modules import *
-from khl_card.accessory import *
+from khl_card import *
 
 # 新建卡片
 # 这里构建了一个卡片，带有一个模块
@@ -17,7 +17,8 @@ card = Card([Section(Kmarkdown('测试卡片'))])
 card.append(Divider())
 
 # 拥有的模块列表，具体用法参考开黑啦官方文档
-['Header', 'Section', 'ImageGroup', 'Container', 'Context', 'ActionGroup', 'File', 'Audio', 'Video', 'Divider', 'Invite', 'Countdown']
+['Header', 'Section', 'ImageGroup', 'Container', 'Context', 'ActionGroup', 'File', 'Audio', 'Video', 'Divider',
+ 'Invite', 'Countdown']
 
 # 拥有的元素列表，具体用法参考开黑啦官方文档
 ['PlainText', 'Kmarkdown', 'Paragraph', 'Image', 'Button', '_BaseAccessory']
@@ -87,6 +88,7 @@ card.build_to_json()
 修复 ``Color`` 中 ``__str__`` 的问题
 
 为倒计时模块添加快速创建方法
+
 ```python
 from khl_card.modules import *
 

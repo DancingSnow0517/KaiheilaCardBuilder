@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 .idea/
-/src/main.py
+/main.py
+/main.py
