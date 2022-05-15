@@ -1,5 +1,7 @@
 import json
 from typing import Optional, List, Union, Tuple
+from collections.abc import Sequence
+from typing import List
 
 from .color import Color
 from .modules import _Module
@@ -8,7 +10,7 @@ from .types import ThemeTypes, SizeTypes, NamedColor
 __all__ = ['Card']
 
 
-class Card:
+class Card(Sequence):
     """
     构建卡片
     """
@@ -44,6 +46,9 @@ class Card:
 
     def __getitem__(self, item: int):
         return self.modules[item]
+
+    def __len__(self):
+        return len(self.modules)
 
     def build(self) -> dict:
         """
