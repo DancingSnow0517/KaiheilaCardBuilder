@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="KaiHeiLaCardBuilder",
-    version="1.2.1",
+    version="1.2.2",
     author="DancingSnow",
     author_email="1121149616@qq.com",
     description="一个构建开黑啦卡片的工具",
