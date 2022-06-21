@@ -11,7 +11,7 @@ from khl_card import *
 
 # 新建卡片
 # 这里构建了一个卡片，带有一个模块
-card = Card([Section(Kmarkdown('测试卡片'))])
+card = Card(Section(Kmarkdown('测试卡片')))
 
 # 给卡片添加模块，这里是分割线
 card.append(Divider())
@@ -24,15 +24,20 @@ card.append(Divider())
 ['PlainText', 'Kmarkdown', 'Paragraph', 'Image', 'Button', '_BaseAccessory']
 
 # 倒计时模块的简便创建
-card.append(Countdown.new_day_countdown('2022-05-05 08:00:00'))
-card.append(Countdown.new_hour_countdown('2022-05-05 08:00:00'))
-card.append(Countdown.new_second_countdown('2022-05-05 08:00:00'))
+card.append(Countdown.new_day_countdown('2022-07-05 08:00:00'))
+card.append(Countdown.new_hour_countdown('2022-07-05 08:00:00'))
+card.append(Countdown.new_second_countdown('2022-07-05 08:00:00'))
+
+# 现在支持链式调用
+card.append(Section(Kmarkdown('调用1'))).append(Section(Kmarkdown('调用2'))).append(Section(Kmarkdown('调用3')))
+
 
 # 构建卡片，返回的卡片的字典
 card.build()
 
 # 构建卡片，返回官方编辑器可以用的 json 文本
-card.build_to_json()
+print(card.build_to_json())
+
 # 输出：
 {
     "type": "card",
@@ -53,27 +58,59 @@ card.build_to_json()
         {
             "type": "countdown",
             "mode": "day",
-            "endTime": 1651708800000,
-            "startTime": 1647088354584
+            "endTime": 1656979200000,
+            "startTime": 1655827836854
         },
         {
             "type": "countdown",
             "mode": "hour",
-            "endTime": 1651708800000,
-            "startTime": 1647088354584
+            "endTime": 1656979200000,
+            "startTime": 1655827836854
         },
         {
             "type": "countdown",
             "mode": "second",
-            "endTime": 1651708800000,
-            "startTime": 1647088354588
+            "endTime": 1656979200000,
+            "startTime": 1655827836891
+        },
+        {
+            "type": "section",
+            "mode": "right",
+            "text": {
+                "type": "kmarkdown",
+                "content": "调用1"
+            }
+        },
+        {
+            "type": "section",
+            "mode": "right",
+            "text": {
+                "type": "kmarkdown",
+                "content": "调用2"
+            }
+        },
+        {
+            "type": "section",
+            "mode": "right",
+            "text": {
+                "type": "kmarkdown",
+                "content": "调用3"
+            }
         }
-    ],
-    "color": "#ffffff"
+    ]
 }
+
 ```
 
 ## 更新日志
+
+### 1.2.2
+
+添加 `Card` 的链式调用
+
+### 1.2.1
+
+现在 `Card` 构建使用可变参数
 
 ### 1.1.1
 

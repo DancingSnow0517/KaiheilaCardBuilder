@@ -1,7 +1,7 @@
 import json
-from typing import Optional, List, Union, Tuple
 from collections.abc import Sequence
 from typing import List
+from typing import Optional, Union
 
 from .color import Color
 from .modules import _Module
@@ -64,19 +64,23 @@ class Card(Sequence):
     def build_to_json(self) -> str:
         return json.dumps(self.build(), indent=4, ensure_ascii=False)
 
-    def append(self, module: _Module):
+    def append(self, module: _Module) -> 'Card':
         self.modules.append(module)
+        return self
 
-    def clear(self):
+    def clear(self) -> 'Card':
         self.modules.clear()
+        return self
 
-    def set_theme(self, theme: Union[str, ThemeTypes]):
+    def set_theme(self, theme: Union[str, ThemeTypes]) -> 'Card':
         self.theme = theme if isinstance(theme, str) else theme.value
+        return self
 
-    def set_size(self, size: Union[str, SizeTypes]):
+    def set_size(self, size: Union[str, SizeTypes]) -> 'Card':
         self.size = size if isinstance(size, str) else size.value
+        return self
 
-    def set_color(self, color: Union[str, Color, NamedColor, None]):
+    def set_color(self, color: Union[str, Color, NamedColor, None]) -> 'Card':
         if color is None:
             self.color = None
         elif isinstance(color, str):
@@ -87,3 +91,4 @@ class Card(Sequence):
             self.color = color.value.__str__()
         else:
             raise ValueError('incorrect color value: ' + self.color)
+        return self

@@ -1,7 +1,7 @@
 import json
 import time
 from abc import abstractmethod, ABC
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 
 from .accessory import _BaseText, _BaseNonText, _BaseAccessory, PlainText, Image, Button
 
