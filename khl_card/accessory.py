@@ -24,6 +24,7 @@ class _BaseText(_BaseAccessory, ABC):
     """
     文字类元素基类
     """
+    content: str
 
 
 class _BaseNonText(_BaseAccessory, ABC):
@@ -36,7 +37,6 @@ class PlainText(_BaseText):
     """
     构造纯文本元素
     """
-    content: str
     emoji: bool
 
     def __init__(self, content: str = '', emoji=True) -> None:
@@ -58,7 +58,6 @@ class Kmarkdown(_BaseText):
     """
     构造kmarkdown文本元素
     """
-    content: str
 
     def __init__(self, content: str = '') -> None:
         """
@@ -73,7 +72,7 @@ class Kmarkdown(_BaseText):
         return {'type': self.type, 'content': self.content}
 
 
-class Paragraph(_BaseText):
+class Paragraph(_BaseAccessory):
     """
     构造多列文本元素
     """
