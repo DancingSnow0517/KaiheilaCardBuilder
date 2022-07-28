@@ -104,6 +104,10 @@ print(card.build_to_json())
 
 ## 更新日志
 
+### 1.2.4
+
+Section 能够使用结构体
+
 ### 1.2.3
 
 修改结构，`Paragraph` 不应该属于文字类元素
