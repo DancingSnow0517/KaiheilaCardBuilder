@@ -1,9 +1,9 @@
 import json
 import time
 from abc import abstractmethod, ABC
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 
-from .accessory import _BaseText, _BaseNonText, _BaseAccessory, PlainText, Image, Button
+from .accessory import _BaseText, _BaseNonText, _BaseAccessory, PlainText, Image, Button, Paragraph
 
 __all__ = ['Header', 'Section', 'ImageGroup', 'Container', 'Context', 'ActionGroup', 'File', 'Audio', 'Video',
            'Divider', 'Invite', 'Countdown', '_Module']
@@ -53,20 +53,20 @@ class Section(_Module):
     """
     构建内容模块
 
-     结构化的内容，显示文本+其它元素。
+    结构化的内容，显示文本+其它元素。
     """
     mode: str
     text: _BaseText
     accessory: _BaseNonText
 
-    def __init__(self, text: _BaseText, *, mode: str = 'right', accessory: _BaseNonText = None) -> None:
+    def __init__(self, text: Union[_BaseText, Paragraph], *, mode: str = 'right', accessory: _BaseNonText = None) -> None:
         """
         构建内容模块
 
         结构化的内容，显示文本+其它元素。
 
         :param mode: accessory在左侧还是在右侧 只能为 left|right
-        :param text: 文本元素
+        :param text: 文本元素，和结构体
         :param accessory: 非文本元素
         """
         self.type = 'section'
