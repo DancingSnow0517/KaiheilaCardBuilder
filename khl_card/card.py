@@ -7,7 +7,7 @@ from .color import Color
 from .modules import _Module
 from .types import ThemeTypes, SizeTypes, NamedColor
 
-__all__ = ['Card']
+__all__ = ['Card', 'CardMessage']
 
 
 class Card(Sequence):
@@ -44,8 +44,11 @@ class Card(Sequence):
         else:
             raise ValueError('incorrect color value: ' + self.color)
 
-    def __getitem__(self, item: int):
+    def __getitem__(self, item: int) -> _Module:
         return self.modules[item]
+
+    def __setitem__(self, key: int, value: _Module):
+        self.modules[key] = value
 
     def __len__(self):
         return len(self.modules)
@@ -92,3 +95,22 @@ class Card(Sequence):
         else:
             raise ValueError('incorrect color value: ' + self.color)
         return self
+
+
+class CardMessage:
+    card_list: List[Card]
+
+    def __init__(self, *card: Card) -> None:
+        self.card_list = list(card)
+
+    def __getitem__(self, item: int) -> Card:
+        return self.card_list[item]
+
+    def __setitem__(self, key: int, value: Card):
+        self.card_list[key] = value
+
+    def build(self):
+        return [card.build() for card in self.card_list]
+
+    def build_to_json(self) -> str:
+        return json.dumps(self.build(), indent=4, ensure_ascii=False)

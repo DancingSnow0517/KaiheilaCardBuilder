@@ -1,8 +1,10 @@
 import json
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Union
 
 __all__ = ['PlainText', 'Kmarkdown', 'Paragraph', 'Image', 'Button', '_BaseAccessory', '_BaseText', '_BaseNonText']
+
+from .types import ThemeTypes
 
 
 class _BaseAccessory(ABC):
@@ -138,10 +140,10 @@ class Button(_BaseNonText):
     click: str
     text: _BaseText
 
-    def __init__(self, text: _BaseText, theme: str = 'primary', value: str = '', click: str = '') -> None:
+    def __init__(self, text: _BaseText, theme: Union[str, ThemeTypes] = 'primary', value: str = '', click: str = '') -> None:
         self.type = 'button'
         self.text = text
-        self.theme = theme
+        self.theme = theme if isinstance(theme, str) else theme.value
         self.value = value
         self.click = click
 
