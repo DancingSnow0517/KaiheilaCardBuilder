@@ -104,6 +104,10 @@ print(card.build_to_json())
 
 ## 更新日志
 
+### 1.2.5
+
+添加 `CardMessage`, `Button` 可以使用 `ThemeTypes`
+
 ### 1.2.4
 
 Section 能够使用结构体
