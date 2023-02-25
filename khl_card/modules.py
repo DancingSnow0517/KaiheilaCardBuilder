@@ -38,7 +38,7 @@ class Header(_Module):
     """
     text: PlainText
 
-    def __init__(self, text: str = '') -> None:
+    def __init__(self, text: Union[str, PlainText] = '') -> None:
         """
         构建标题模块
 
@@ -47,7 +47,7 @@ class Header(_Module):
         :param text: 标题内容
         """
         self.type = 'header'
-        self.text = PlainText(content=text)
+        self.text = text if isinstance(text, PlainText) else PlainText(text)
 
     def build(self) -> dict:
         return {"type": self.type, "text": self.text.build()}
@@ -420,7 +420,7 @@ class Audio(_FileModule):
 
     def build(self) -> dict:
         ret = super().build()
-        ret['cover'] = self.cover
+        ret['cover'] = self.cover if self.cover is not None else ''
         return ret
 
     def __repr__(self):

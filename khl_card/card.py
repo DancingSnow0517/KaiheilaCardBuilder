@@ -73,6 +73,9 @@ class Card(Sequence):
     def index(self, value: _Module, start: int = ..., stop: int = ...) -> int:
         return self.modules.index(value, start, stop)
 
+    def append(self, module: _Module):
+        self.modules.append(module)
+
     def build(self) -> dict:
         """
         :return: 构造后卡片
@@ -149,6 +152,9 @@ class CardMessage(Sequence):
 
     def count(self, value: Card) -> int:
         return self.card_list.count(value)
+
+    def append(self, card: Card):
+        self.card_list.append(card)
 
     def build(self):
         return [card.build() for card in self.card_list]
