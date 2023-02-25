@@ -147,7 +147,7 @@ class Image(_BaseNonText):
         return {'type': self.type, 'src': self.src, 'alt': self.alt, 'size': self.size, 'circle': self.circle}
 
     def __repr__(self):
-        return f'Image(src=\'{self.src}\', size=\'{self.size}\', alt=\'{self.alt}\', circle=\'{self.circle}\')'
+        return f'Image(src=\'{self.src}\', size=\'{self.size}\', alt=\'{self.alt}\', circle={self.circle})'
 
 
 class Button(_BaseNonText):

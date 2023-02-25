@@ -1,12 +1,31 @@
-from khl_card import CardMessage, Card, ActionGroup, Button, Kmarkdown
-from khl_card.builder import CardMessageBuilder, CardBuilder
+from khl_card import Image, Kmarkdown
+from khl_card.builder import CardMessageBuilder, CardBuilder, ImageGroupBuilder, ContextBuilder, ContainerBuilder
 
-cm = CardMessageBuilder().add_card(
+cm = CardMessageBuilder().card(
     CardBuilder()
-    .add_header('Test Header')
-    .add_invite("12345sdaf")
+    .image_group(
+        ImageGroupBuilder()
+        .add(Image('http://img.sdadad'))
+        .build()
+    )
+    .context(
+        ContextBuilder()
+        .add(Kmarkdown('**Test context**'))
+        .build()
+    )
+    .divider()
+    .invite('asfws66')
+    .container(
+        ContainerBuilder()
+        .add(Image('http://img.sdadad'))
+        .add(Image('http://img.sdadad'))
+        .build()
+    )
+    .header('This is a header')
+    .section(Kmarkdown('This is a section'))
+    .file('file_url', 'title')
+    .audio('src', 'title', 'cover')
     .build()
 ).build()
 
-for card in cm:
-    print(card)
+print(cm)

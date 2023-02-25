@@ -1,16 +1,24 @@
-from typing import Union, Optional
+from abc import ABC, abstractmethod
+from typing import Union, Optional, List
 
-from . import PlainText, CardMessage, Card, Header, Section, ImageGroup, Container, ActionGroup, Context, Divider, \
-    Invite, File, Video, Audio
-from .accessory import _BaseText, _BaseNonText, Paragraph, Image, Button, _BaseAccessory
+from .modules import Header, Section, ImageGroup, Container, ActionGroup, Context, Divider, Invite, File, Video, Audio, \
+    Countdown
+from .accessory import PlainText, _BaseText, _BaseNonText, Paragraph, Image, Button, _BaseAccessory
+from .card import CardMessage, Card
 
 
-class CardMessageBuilder:
+class AbstractBuilder(ABC):
+    @abstractmethod
+    def build(self):
+        ...
+
+
+class CardMessageBuilder(AbstractBuilder):
 
     def __init__(self) -> None:
         self.__card_message = CardMessage()
 
-    def add_card(self, card: Card):
+    def card(self, card: Card):
         self.__card_message.append(card)
         return self
 
@@ -18,56 +26,123 @@ class CardMessageBuilder:
         return self.__card_message
 
 
-class CardBuilder:
+class CardBuilder(AbstractBuilder):
     def __init__(self) -> None:
-        self.__card = Card()
+        self._card = Card()
 
-    def add_header(self, text: Union[str, PlainText] = ''):
-        self.__card.append(Header(text))
+    def header(self, text: Union[str, PlainText] = ''):
+        self._card.append(Header(text))
         return self
 
-    def add_section(self, text: Union[_BaseText, Paragraph], *, mode: str = 'right',
-                 accessory: _BaseNonText = None):
-        self.__card.append(Section(text, mode=mode, accessory=accessory))
+    def section(self, text: Union[_BaseText, Paragraph], *, mode: str = 'right',
+                accessory: _BaseNonText = None):
+        self._card.append(Section(text, mode=mode, accessory=accessory))
         return self
 
-    def add_image_group(self, *elements: Image):
-        self.__card.append(ImageGroup(*elements))
+    def image_group(self, image_group: ImageGroup):
+        self._card.append(image_group)
         return self
 
-    def add_container(self, *elements: Image):
-        self.__card.append(Container(*elements))
+    def container(self, container: Container):
+        self._card.append(container)
         return self
 
-    def add_action_group(self, *elements: Button):
-        self.__card.append(ActionGroup(*elements))
+    def action_group(self, action_group: ActionGroup):
+        self._card.append(action_group)
         return self
 
-    def add_context(self, *elements: _BaseAccessory):
-        self.__card.append(Context(*elements))
+    def context(self, context: Context):
+        self._card.append(context)
         return self
 
-    def add_divider(self):
-        self.__card.append(Divider())
+    def divider(self):
+        self._card.append(Divider())
         return self
 
-    # TODO: Countdown
-
-    def add_invite(self, code: str):
-        self.__card.append(Invite(code))
+    def day_countdown(self, end_time: str):
+        self._card.append(Countdown.new_day_countdown(end_time))
         return self
 
-    def add_file(self, src: str, title: str):
-        self.__card.append(File(src, title))
+    def hour_countdown(self, end_time: str):
+        self._card.append(Countdown.new_hour_countdown(end_time))
         return self
 
-    def add_video(self, src: str, title: str):
-        self.__card.append(Video(src, title))
+    def second_countdown(self, end_time: str, start_time: Optional[str] = None):
+        self._card.append(Countdown.new_second_countdown(end_time, start_time))
         return self
 
-    def add_audio(self, src: str, title: str, cover: Optional[str] = None):
-        self.__card.append(Audio(src, title, cover))
+    def invite(self, code: str):
+        self._card.append(Invite(code))
+        return self
+
+    def file(self, src: str, title: str):
+        self._card.append(File(src, title))
+        return self
+
+    def video(self, src: str, title: str):
+        self._card.append(Video(src, title))
+        return self
+
+    def audio(self, src: str, title: str, cover: Optional[str] = None):
+        self._card.append(Audio(src, title, cover))
         return self
 
     def build(self) -> Card:
-        return self.__card
+        return self._card
+
+    @property
+    def card(self):
+        """非必要不访问"""
+        return self._card
+
+
+class MultiBuilder(AbstractBuilder, ABC):
+    elements: List[_BaseAccessory]
+
+    def __init__(self) -> None:
+        self.elements = []
+
+    @abstractmethod
+    def add(self, accessory: _BaseAccessory):
+        ...
+
+    @abstractmethod
+    def build(self):
+        ...
+
+
+class ImageGroupBuilder(MultiBuilder):
+    def add(self, accessory: Image):
+        self.elements.append(accessory)
+        return self
+
+    def build(self) -> ImageGroup:
+        return ImageGroup(*self.elements)
+
+
+class ContainerBuilder(MultiBuilder):
+
+    def add(self, accessory: Image):
+        self.elements.append(accessory)
+        return self
+
+    def build(self) -> Container:
+        return Container(*self.elements)
+
+
+class ActionGroupBuilder(MultiBuilder):
+    def add(self, accessory: Button):
+        self.elements.append(accessory)
+        return self
+
+    def build(self) -> ActionGroup:
+        return ActionGroup(*self.elements)
+
+
+class ContextBuilder(MultiBuilder):
+    def add(self, accessory: _BaseAccessory):
+        self.elements.append(accessory)
+        return self
+
+    def build(self) -> Context:
+        return Context(*self.elements)

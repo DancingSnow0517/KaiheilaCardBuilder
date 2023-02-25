@@ -1,6 +1,6 @@
 import json
 from collections.abc import Sequence
-from typing import List, Iterator, TypeVar, Any
+from typing import List, Iterator, TypeVar
 from typing import Optional, Union
 
 from .color import Color
@@ -90,10 +90,6 @@ class Card(Sequence):
     def build_to_json(self) -> str:
         return json.dumps(self.build(), indent=4, ensure_ascii=False)
 
-    def append(self, module: _Module) -> 'Card':
-        self.modules.append(module)
-        return self
-
     def clear(self) -> 'Card':
         self.modules.clear()
         return self
@@ -145,7 +141,7 @@ class CardMessage(Sequence):
         return self.card_list.__reversed__()
 
     def __repr__(self):
-        'CardMessage(' + ', '.join([card.__repr__() for card in self.card_list]) + ')'
+        return 'CardMessage(' + ', '.join([card.__repr__() for card in self.card_list]) + ')'
 
     def index(self, value: Card, start: int = ..., stop: int = ...) -> int:
         return self.card_list.index(value, start, stop)
