@@ -25,6 +25,10 @@ class _Module(ABC):
     def build_to_json(self) -> str:
         return json.dumps(self.build(), indent=4, ensure_ascii=False)
 
+    @abstractmethod
+    def __repr__(self):
+        ...
+
 
 class Header(_Module):
     """
@@ -48,6 +52,9 @@ class Header(_Module):
     def build(self) -> dict:
         return {"type": self.type, "text": self.text.build()}
 
+    def __repr__(self):
+        return f'Header({self.text.__repr__()})'
+
 
 class Section(_Module):
     """
@@ -59,7 +66,8 @@ class Section(_Module):
     text: _BaseText
     accessory: _BaseNonText
 
-    def __init__(self, text: Union[_BaseText, Paragraph], *, mode: str = 'right', accessory: _BaseNonText = None) -> None:
+    def __init__(self, text: Union[_BaseText, Paragraph], *, mode: str = 'right',
+                 accessory: _BaseNonText = None) -> None:
         """
         构建内容模块
 
@@ -80,6 +88,9 @@ class Section(_Module):
             return ret
         ret['accessory'] = self.accessory.build()
         return ret
+
+    def __repr__(self):
+        return f'Section(text={self.text.__repr__()}, mode=\'{self.mode}\', accessory={self.accessory.__repr__()})'
 
 
 class ImageGroup(_Module):
@@ -109,6 +120,9 @@ class ImageGroup(_Module):
             ret['elements'].append(i.build())
         return ret
 
+    def __repr__(self):
+        return 'ImageGroup(' + ', '.join([image.__repr__() for image in self.elements]) + ')'
+
 
 class Container(_Module):
     """
@@ -134,6 +148,9 @@ class Container(_Module):
         for i in self.elements:
             ret['elements'].append(i.build())
         return ret
+
+    def __repr__(self):
+        return 'Container(' + ', '.join([image.__repr__() for image in self.elements]) + ')'
 
 
 class ActionGroup(_Module):
@@ -163,6 +180,9 @@ class ActionGroup(_Module):
             ret['elements'].append(i.build())
         return ret
 
+    def __repr__(self):
+        return 'ActionGroup(' + ', '.join([button.__repr__() for button in self.elements]) + ')'
+
 
 class Context(_Module):
     """
@@ -191,6 +211,9 @@ class Context(_Module):
             ret['elements'].append(i.build())
         return ret
 
+    def __repr__(self):
+        return 'Context(' + ', '.join([element.__repr__() for element in self.elements]) + ')'
+
 
 class Divider(_Module):
     """
@@ -209,6 +232,9 @@ class Divider(_Module):
 
     def build(self) -> dict:
         return {'type': self.type}
+
+    def __repr__(self):
+        return 'Divider()'
 
 
 class Countdown(_Module):
@@ -279,6 +305,12 @@ class Countdown(_Module):
     def build(self) -> dict:
         return {'type': self.type, 'mode': self.mode, 'endTime': self.endTime, 'startTime': self.startTime}
 
+    def __repr__(self):
+        if self.mode == 'second':
+            return f'Countdown(mode=\'{self.mode}\', endtime={self.endTime}, starttime={self.startTime})'
+        else:
+            return f'Countdown(mode=\'{self.mode}\', endtime={self.endTime})'
+
 
 class Invite(_Module):
     """
@@ -302,13 +334,17 @@ class Invite(_Module):
     def build(self) -> dict:
         return {'type': self.type, 'code': self.code}
 
+    def __repr__(self):
+        return f'Invite(code=\'{self.code}\')'
 
-class _FileModule(_Module):
+
+class _FileModule(_Module, ABC):
     """
     文件模块基类
     """
     src: str
     title: str
+    type: str
 
     def __init__(self, src: str, title: str) -> None:
         self.src = src
@@ -333,6 +369,9 @@ class File(_FileModule):
         super().__init__(src, title)
         self.type = 'file'
 
+    def __repr__(self):
+        return f'File(src=\'{self.src}\', title=\'{self.title}\')'
+
 
 class Video(_FileModule):
     """
@@ -353,6 +392,9 @@ class Video(_FileModule):
         super().__init__(src, title)
         self.type = 'video'
 
+    def __repr__(self):
+        return f'Video(src=\'{self.src}\', title=\'{self.title}\')'
+
 
 class Audio(_FileModule):
     """
@@ -362,7 +404,7 @@ class Audio(_FileModule):
     """
     cover: str
 
-    def __init__(self, src: str, title: str, cover: str) -> None:
+    def __init__(self, src: str, title: str, cover: Optional[str] = None) -> None:
         """
         构建音频模块
 
@@ -380,3 +422,6 @@ class Audio(_FileModule):
         ret = super().build()
         ret['cover'] = self.cover
         return ret
+
+    def __repr__(self):
+        return f'Audio(src=\'{self.src}\', title=\'{self.title}\', cover=\'{self.cover}\')'

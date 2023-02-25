@@ -33,3 +33,6 @@ class Color:
         if len(b) == 1:
             b = '0' + b
         return f'#{r+g+b}'
+
+    def __repr__(self):
+        return f'Color(r={self.R}, g={self.G}, b={self.B})'

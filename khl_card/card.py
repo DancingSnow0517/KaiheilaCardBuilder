@@ -1,6 +1,6 @@
 import json
 from collections.abc import Sequence
-from typing import List
+from typing import List, Iterator, TypeVar, Any
 from typing import Optional, Union
 
 from .color import Color
@@ -8,6 +8,8 @@ from .modules import _Module
 from .types import ThemeTypes, SizeTypes, NamedColor
 
 __all__ = ['Card', 'CardMessage']
+
+_T_co = TypeVar("_T_co", covariant=True)
 
 
 class Card(Sequence):
@@ -53,6 +55,24 @@ class Card(Sequence):
     def __len__(self):
         return len(self.modules)
 
+    def __iter__(self) -> Iterator[_T_co]:
+        return self.modules.__iter__()
+
+    def __contains__(self, value: object) -> bool:
+        return self.modules.__contains__(value)
+
+    def __reversed__(self) -> Iterator[_T_co]:
+        return self.modules.__reversed__()
+
+    def __repr__(self):
+        return 'Card(' + ', '.join([module.__repr__() for module in self.modules]) + ')'
+
+    def count(self, value: _Module) -> int:
+        return self.modules.count(value)
+
+    def index(self, value: _Module, start: int = ..., stop: int = ...) -> int:
+        return self.modules.index(value, start, stop)
+
     def build(self) -> dict:
         """
         :return: 构造后卡片
@@ -97,7 +117,7 @@ class Card(Sequence):
         return self
 
 
-class CardMessage:
+class CardMessage(Sequence):
     card_list: List[Card]
 
     def __init__(self, *card: Card) -> None:
@@ -108,6 +128,27 @@ class CardMessage:
 
     def __setitem__(self, key: int, value: Card):
         self.card_list[key] = value
+
+    def __len__(self):
+        return len(self.card_list)
+
+    def __iter__(self) -> Iterator[_T_co]:
+        return self.card_list.__iter__()
+
+    def __contains__(self, value: object) -> bool:
+        return self.card_list.__contains__(value)
+
+    def __reversed__(self) -> Iterator[_T_co]:
+        return self.card_list.__reversed__()
+
+    def __repr__(self):
+        'CardMessage(' + ', '.join([card.__repr__() for card in self.card_list]) + ')'
+
+    def index(self, value: Card, start: int = ..., stop: int = ...) -> int:
+        return self.card_list.index(value, start, stop)
+
+    def count(self, value: Card) -> int:
+        return self.card_list.count(value)
 
     def build(self):
         return [card.build() for card in self.card_list]

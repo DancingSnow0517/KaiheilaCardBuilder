@@ -4,7 +4,7 @@ from typing import List, Union
 
 __all__ = ['PlainText', 'Kmarkdown', 'Paragraph', 'Image', 'Button', '_BaseAccessory', '_BaseText', '_BaseNonText']
 
-from .types import ThemeTypes
+from .types import ThemeTypes, SizeTypes
 
 
 class _BaseAccessory(ABC):
@@ -20,6 +20,10 @@ class _BaseAccessory(ABC):
 
     def build_to_json(self) -> str:
         return json.dumps(self.build(), indent=4, ensure_ascii=False)
+
+    @abstractmethod
+    def __repr__(self):
+        ...
 
 
 class _BaseText(_BaseAccessory, ABC):
@@ -55,6 +59,9 @@ class PlainText(_BaseText):
     def build(self) -> dict:
         return {'type': self.type, 'content': self.content}
 
+    def __repr__(self):
+        return f'PlainText(content=\'{self.content}\', emoji={self.emoji})'
+
 
 class Kmarkdown(_BaseText):
     """
@@ -72,6 +79,9 @@ class Kmarkdown(_BaseText):
 
     def build(self) -> dict:
         return {'type': self.type, 'content': self.content}
+
+    def __repr__(self):
+        return f'Kmarkdown(content=\'{self.content}\')'
 
 
 class Paragraph(_BaseAccessory):
@@ -105,6 +115,9 @@ class Paragraph(_BaseAccessory):
             ret['fields'].append(i.build())
         return ret
 
+    def __repr__(self):
+        return f'Paragraph(cols={self.cols}, fields=[{", ".join([text.__repr__() for text in self.fields])}])'
+
 
 class Image(_BaseNonText):
     """
@@ -115,7 +128,7 @@ class Image(_BaseNonText):
     size: str
     circle: bool
 
-    def __init__(self, src: str, size: str = 'lg', alt: str = '', circle: bool = False) -> None:
+    def __init__(self, src: str, size: Union[str, SizeTypes] = 'lg', alt: str = '', circle: bool = False) -> None:
         """
         显示图片元素
 
@@ -127,11 +140,14 @@ class Image(_BaseNonText):
         self.type = 'image'
         self.src = src
         self.alt = alt
-        self.size = size
+        self.size = size.value if isinstance(size, SizeTypes) else size
         self.circle = circle
 
     def build(self) -> dict:
         return {'type': self.type, 'src': self.src, 'alt': self.alt, 'size': self.size, 'circle': self.circle}
+
+    def __repr__(self):
+        return f'Image(src=\'{self.src}\', size=\'{self.size}\', alt=\'{self.alt}\', circle=\'{self.circle}\')'
 
 
 class Button(_BaseNonText):
@@ -150,3 +166,6 @@ class Button(_BaseNonText):
     def build(self) -> dict:
         return {'type': self.type, 'theme': self.theme, 'value': self.value, 'click': self.click,
                 'text': self.text.build()}
+
+    def __repr__(self):
+        return f'Button(text={self.text.__repr__()}, theme=\'{self.theme}\', value=\'{self.value}\', click=\'{self.click}\')'
