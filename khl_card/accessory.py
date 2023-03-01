@@ -77,11 +77,76 @@ class Kmarkdown(_BaseText):
         self.type = 'kmarkdown'
         self.content = content
 
+    @classmethod
+    def bold(cls, content: str = ''):
+        """构造加粗文字"""
+        return cls(f'**{content}**')
+
+    @classmethod
+    def italic(cls, content: str = ''):
+        """构造斜体文字"""
+        return cls(f'*{content}*')
+
+    @classmethod
+    def bold_italic(cls, content: str = ''):
+        """构造加粗斜体文字"""
+        return cls(f'***{content}***')
+
+    @classmethod
+    def strikethrough(cls, content: str = ''):
+        """构造删除线文字"""
+        return cls(f'~~{content}~~')
+
+    @classmethod
+    def link(cls, text: str, link: str):
+        """构造超链接文字"""
+        return cls(f'[{text}]({link})')
+
+    @classmethod
+    def divider(cls):
+        return cls('---')
+
+    @classmethod
+    def quote(cls, content: str = ''):
+        return cls(f'> {content}')
+
+    @classmethod
+    def underline(cls, content: str = ''):
+        return cls(f'(ins){content}(ins)')
+
+    @classmethod
+    def spoiler(cls, content: str = ''):
+        return cls(f'(spl){content}(spl)')
+
+    @classmethod
+    def at_channel(cls, channel_id: str):
+        return cls(f'(chn){channel_id}(chn)')
+
+    @classmethod
+    def at_user(cls, user_id: str):
+        return cls(f'(met){user_id}(met)')
+
+    @classmethod
+    def at_role(cls, role_id: str):
+        return cls(f'(rol){role_id}(rol)')
+
+    @classmethod
+    def inline_code(cls, code: str):
+        return cls(f'`{code}`')
+
+    @classmethod
+    def code_block(cls, code: str, language: str = ''):
+        return cls(f'```{language}\n{code}\n```')
+
     def build(self) -> dict:
         return {'type': self.type, 'content': self.content}
 
     def __repr__(self):
         return f'Kmarkdown(content=\'{self.content}\')'
+
+    def __add__(self, other: 'Kmarkdown') -> 'Kmarkdown':
+        self.content += other.content
+        return self
 
 
 class Paragraph(_BaseAccessory):
@@ -156,7 +221,8 @@ class Button(_BaseNonText):
     click: str
     text: _BaseText
 
-    def __init__(self, text: _BaseText, theme: Union[str, ThemeTypes] = 'primary', value: str = '', click: str = '') -> None:
+    def __init__(self, text: _BaseText, theme: Union[str, ThemeTypes] = 'primary', value: str = '',
+                 click: str = '') -> None:
         self.type = 'button'
         self.text = text
         self.theme = theme if isinstance(theme, str) else theme.value
