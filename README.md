@@ -217,6 +217,12 @@ print(cm.build_to_json())
 
 ## 更新日志
 
+### 1.3.0
+
+添加 `CardMessageBuilder` `CardBuilder` `ImageGroupBuilder` `ContainerBuilder` `ContextBuilder` `ActionGroupBuilder` 来快捷的构造卡片
+
+添加KMD的特殊用法快捷，KMD能够使用 `+` 拼接。例：`Kmarkdown.bold('Test context: ') + Kmarkdown('abcde')`
+
 ### 1.2.5
 
 添加 `CardMessage`, `Button` 可以使用 `ThemeTypes`
