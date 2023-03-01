@@ -5,8 +5,6 @@
 ## 使用方法
 
 ```python
-from khl_card.card import Card
-from khl_card.modules import *
 from khl_card import *
 
 # 新建卡片
@@ -30,7 +28,6 @@ card.append(Countdown.new_second_countdown('2022-07-05 08:00:00'))
 
 # 现在支持链式调用
 card.append(Section(Kmarkdown('调用1'))).append(Section(Kmarkdown('调用2'))).append(Section(Kmarkdown('调用3')))
-
 
 # 构建卡片，返回的卡片的字典
 card.build()
@@ -99,6 +96,122 @@ print(card.build_to_json())
         }
     ]
 }
+
+# 现在可以使用 CardMessageBuilder 来构造卡片消息
+cm = CardMessageBuilder().card(
+    CardBuilder()
+    .image_group(
+        ImageGroupBuilder()
+        .add(Image('http://img.sdadad'))
+        .build()
+    )
+    .context(
+        ContextBuilder()
+        .add(Kmarkdown.bold('Test context: ') + Kmarkdown('abcde'))  # 现在 KMD 也能够使用 + 拼接了
+        .build()
+    )
+    .divider()
+    .invite('asfws66')
+    .container(
+        ContainerBuilder()
+        .add(Image('http://img.sdadad'))
+        .add(Image('http://img.sdadad'))
+        .build()
+    )
+    .header('This is a header')
+    .section(Kmarkdown('This is a section'))
+    .file('file_url', 'title')
+    .audio('src', 'title', 'cover')
+    .build()
+).build()
+
+print(cm.build_to_json())
+
+
+# 输出：
+
+[
+    {
+        "type": "card",
+        "theme": "primary",
+        "size": "lg",
+        "modules": [
+            {
+                "type": "image-group",
+                "elements": [
+                    {
+                        "type": "image",
+                        "src": "http://img.sdadad",
+                        "alt": "",
+                        "size": "lg",
+                        "circle": false
+                    }
+                ]
+            },
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "kmarkdown",
+                        "content": "**Test context: **abcde"
+                    }
+                ]
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "invite",
+                "code": "asfws66"
+            },
+            {
+                "type": "container",
+                "elements": [
+                    {
+                        "type": "image",
+                        "src": "http://img.sdadad",
+                        "alt": "",
+                        "size": "lg",
+                        "circle": false
+                    },
+                    {
+                        "type": "image",
+                        "src": "http://img.sdadad",
+                        "alt": "",
+                        "size": "lg",
+                        "circle": false
+                    }
+                ]
+            },
+            {
+                "type": "header",
+                "text": {
+                    "type": "plain-text",
+                    "content": "This is a header"
+                }
+            },
+            {
+                "type": "section",
+                "mode": "right",
+                "text": {
+                    "type": "kmarkdown",
+                    "content": "This is a section"
+                }
+            },
+            {
+                "type": "file",
+                "src": "file_url",
+                "title": "title"
+            },
+            {
+                "type": "audio",
+                "src": "src",
+                "title": "title",
+                "cover": "cover"
+            }
+        ]
+    }
+]
 
 ```
 
