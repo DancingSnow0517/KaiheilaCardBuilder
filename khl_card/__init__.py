@@ -4,5 +4,5 @@ from .builder import CardBuilder, CardMessageBuilder, ImageGroupBuilder, Contain
 from .card import Card, CardMessage
 from .modules import Header, Section, ImageGroup, Container, Context, ActionGroup, File, Audio, Video, Divider, Invite, \
     Countdown
-from .types import ThemeTypes, SizeTypes, NamedColor
+from .types import ThemeTypes, SizeTypes, NamedColor, KmarkdownColors
 from .color import Color

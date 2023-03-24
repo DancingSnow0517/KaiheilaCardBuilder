@@ -4,7 +4,7 @@ from typing import List, Union
 
 __all__ = ['PlainText', 'Kmarkdown', 'Paragraph', 'Image', 'Button', '_BaseAccessory', '_BaseText', '_BaseNonText']
 
-from .types import ThemeTypes, SizeTypes
+from .types import ThemeTypes, SizeTypes, KmarkdownColors
 
 
 class _BaseAccessory(ABC):
@@ -137,6 +137,10 @@ class Kmarkdown(_BaseText):
     @classmethod
     def code_block(cls, code: str, language: str = ''):
         return cls(f'```{language}\n{code}\n```')
+
+    @classmethod
+    def color(cls, content: str, color: Union[str, KmarkdownColors] = KmarkdownColors.NONE):
+        return cls(f'(font){content}(font)[{color if isinstance(color, str) else color.value}]')
 
     def build(self) -> dict:
         return {'type': self.type, 'content': self.content}

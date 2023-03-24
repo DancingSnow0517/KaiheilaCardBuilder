@@ -2,7 +2,7 @@ from .color import Color
 
 from enum import Enum
 
-__all__ = ['ThemeTypes', 'SizeTypes', 'NamedColor']
+__all__ = ['ThemeTypes', 'SizeTypes', 'NamedColor', 'KmarkdownColors']
 
 
 class ThemeTypes(Enum):
@@ -20,6 +20,17 @@ class SizeTypes(Enum):
     SM: str = 'sm'
     MD: str = 'md'
     LG: str = 'lg'
+
+
+class KmarkdownColors(Enum):
+    DANGER = 'danger'
+    INFO = 'info'
+    PINK = 'pink'
+    PRIMARY = 'primary'
+    SECONDARY = 'secondary'
+    SUCCESS = 'success'
+    WARNING = 'warning'
+    NONE = 'none'
 
 
 class NamedColor(Enum):
